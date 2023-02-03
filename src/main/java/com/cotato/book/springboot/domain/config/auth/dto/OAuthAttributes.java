@@ -27,6 +27,8 @@ public class OAuthAttributes {
     public static OAuthAttributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes) {
         if("naver".equals(registrationId)) {
             return ofNaver("id", attributes);
+        }else if ("kakao".equals(registrationId)){
+            return ofKakao("id", attributes);
         }
 
         return ofGoogle(userNameAttributeName, attributes);
@@ -54,6 +56,19 @@ public class OAuthAttributes {
                 .build();
     }
 
+    private static OAuthAttributes ofKakao(String userNameAttributeName, Map<String, Object> attributes) {
+        //카카오의 경우 Kakao_account값 안에 프로필 정보가 들어있어서 map에서 "response" 키 값을꺼내 사용
+        Map<String,Object> response = (Map<String, Object>)attributes.get("kakao_account");
+        Map<String,Object> profile = (Map<String, Object>) response.get("profile");
+        return OAuthAttributes.builder()
+                .name((String) profile.get("nickname"))
+                .email((String) response.get("email"))
+                .picture((String) profile.get("image"))
+                .attributes(attributes)
+                .nameAttributeKey(userNameAttributeName)
+                .build();
+    }
+
     public User toEntity() {
         return User.builder()
                 .name(name)
@@ -63,3 +78,4 @@ public class OAuthAttributes {
                 .build();
     }
 }
+
