@@ -1,0 +1,51 @@
+package com.cotato.book.springboot.domain.user;
+
+import com.cotato.book.springboot.domain.user.Role;
+import com.cotato.book.springboot.domain.BaseTimeEntity;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+
+@Getter
+@NoArgsConstructor
+@Entity
+public class User extends BaseTimeEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private String email;
+
+    @Column //default is true
+    private String picture;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
+
+    @Builder
+
+    public User(String name, String email, String picture, Role role) {
+        this.name = name;
+        this.email = email;
+        this.picture = picture;
+        this.role = role;   //Role 클래스는 무엇인가? 이 프로그램에서 어떻게 작용하는가?
+    }
+
+    public User update(String name, String picture) {
+        this.name=name;
+        this.picture=picture;
+
+        return this;
+    }
+
+    public String getRoleKey() {
+        return this.role.getKey();
+    }
+}
