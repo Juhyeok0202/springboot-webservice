@@ -43,7 +43,7 @@ public class PostsApiControllerTest {
     private int port;
 
     @Autowired
-    private TestRestTemplate restTemplate;
+    private TestRestTemplate restTemplate; //사용할 때, requestDto클래스를 만들어서 entity에 접근하는 형식으로 바꾸니 bean에 정상 등록
 
     @Autowired
     private PostsRepository postsRepository;
